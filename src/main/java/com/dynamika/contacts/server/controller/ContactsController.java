@@ -1,19 +1,26 @@
 package com.dynamika.contacts.server.controller;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
+import com.dynamika.contacts.server.entity.Contact;
+import com.dynamika.contacts.server.repository.ContactsRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+import java.util.Date;
+import java.util.List;
+
+@RestController
 @RequestMapping("/contacts")
 public class ContactsController {
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public @ResponseBody String getContacts(ModelMap model)
+    @Autowired
+    private ContactsRepository contactsRepository;
+
+    @RequestMapping
+    public @ResponseBody List<Contact> getContacts()
     {
-        return "ContactsList";
+        List<Contact> contacts = contactsRepository.findAll();
+        return contacts;
     }
 }
