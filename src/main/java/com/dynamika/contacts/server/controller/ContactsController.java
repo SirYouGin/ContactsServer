@@ -2,25 +2,56 @@ package com.dynamika.contacts.server.controller;
 
 import com.dynamika.contacts.server.entity.Contact;
 import com.dynamika.contacts.server.repository.ContactsRepository;
+import com.dynamika.contacts.server.service.ContactsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/contacts")
+@RequestMapping
 public class ContactsController {
 
     @Autowired
-    private ContactsRepository contactsRepository;
+    private ContactsService service;
 
-    @RequestMapping
-    public @ResponseBody List<Contact> getContacts()
+    @RequestMapping(value="/contacts")
+    @ResponseBody
+    public List<Contact> getAllContacts()
     {
-        List<Contact> contacts = contactsRepository.findAll();
-        return contacts;
+        return service.getAll();
+
+    }
+
+    @RequestMapping(value="/contacts/{id}")
+    @ResponseBody
+    public Contact getContact(@PathVariable("id") long id)
+    {
+        return service.getByID(id);
+
+    }
+
+    @RequestMapping(value = "/contacts", method = RequestMethod.POST)
+    @ResponseBody
+    public Contact save(@RequestBody Contact contact)
+    {
+        return service.save(contact);
+
+    }
+
+    @RequestMapping(value="/contacts/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public void deleteContact(@PathVariable("id") long id)
+    {
+        service.remove(id);
+
+    }
+
+    @RequestMapping(value="/contacts/{id}", method = RequestMethod.PUT)
+    @ResponseBody
+    public Contact updateContact(@RequestBody Contact contact)
+    {
+        return service.save(contact);
+
     }
 }

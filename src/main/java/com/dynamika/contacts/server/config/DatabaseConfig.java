@@ -58,7 +58,7 @@ public class DatabaseConfig {
         return ds;
     }
 
-    @Bean
+    @Bean(name = "transactionManager")
     public PlatformTransactionManager transactionManager() {
         JpaTransactionManager manager = new JpaTransactionManager();
         manager.setEntityManagerFactory(entityManagerFactory().getObject());
